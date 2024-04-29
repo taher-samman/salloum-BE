@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Form</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+                integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+                crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+</head>
+
+<body>
+        <div class="container">
+                <form method="post" action="http://salloum.local/api/application" enctype="multipart/form-data">
+                        <div class="mb-3">
+                                <label class="form-label">Fullname*</label>
+                                <input type="text" class="form-control" name="fullname" value="taher samman" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">dob*</label>
+                                <input type="date" class="form-control" name="dob" value="01/04/2000" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">email*</label>
+                                <input type="email" class="form-control" name="email" value="taher.a.samman@gmail.com"
+                                        required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">dr email*</label>
+                                <input type="email" class="form-control" name="dr_email" value="taher.samman@foo.mobi"
+                                        required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">address*</label>
+                                <input type="text" class="form-control" name="address"
+                                        value="lebanon tripoli , kobe machrou3 7ariri" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">mobile*</label>
+                                <input type="text" class="form-control" name="mobile" value="03175003" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">school_name_address*</label>
+                                <input type="text" class="form-control" name="school_name_address"
+                                        value="sanawiyet ebbe" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">study_specialty*</label>
+                                <input type="text" class="form-control" name="study_specialty" value="dev j7sh"
+                                        required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">current_study_year*</label>
+                                <select class="form-select" name="current_study_year" required>
+                                        <option>السنة الأولى ثانوي </option>
+                                        <option>السنة الثانية ثانوي </option>
+                                        <option>السنة الثالثة ثانوي </option>
+                                        <option>مهني سنة أولى </option>
+                                        <option>مهني سنة ثانية </option>
+                                        <option>مهني سنة ثالثة </option>
+                                        <option>سنة أولى جامعة </option>
+                                        <option>سنة ثانية جامعة </option>
+                                        <option selected>سنة ثالثة جامعة </option>
+                                        <option>سنة رابعة جامعة </option>
+                                </select>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">study_avg*</label>
+                                <input type="text" class="form-control" name="study_avg" value="65" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">tuition_cost_semester*</label>
+                                <input type="text" class="form-control" name="tuition_cost_semester" value="250 alf"
+                                        required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label for="formFile" class="form-label">tuition_cost_image*</label>
+                                <input class="form-control" type="file" name="tuition_cost_image">
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">tuition_cost_year*</label>
+                                <input type="text" class="form-control" name="tuition_cost_year" value="500 alf"
+                                        required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label for="formFile" class="form-label">scholarship_reason*</label>
+                                <input class="form-control" type="file" name="scholarship_reason">
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">father_work*</label>
+                                <input type="text" class="form-control" name="father_work" value="taxi" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">mother_work*</label>
+                                <input type="text" class="form-control" name="mother_work" value="empty" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">family_members*</label>
+                                <input type="text" class="form-control" name="family_members" value="6" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">anyone_working*</label>
+                                <select class="form-select" name="anyone_working" required>
+                                        <option>نعم</option>
+                                        <option selected>لا</option>
+                                        <option>عمل موسمي أو بدوام جزئي </option>
+                                </select>
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">household_income*</label>
+                                <input type="text" class="form-control" name="household_income" value="2rouch" required>
+                        </div>
+
+                        <div class="mb-3">
+                                <label for="formFile" class="form-label">id_image*</label>
+                                <input class="form-control" type="file" name="id_image">
+                        </div>
+
+                        <div class="mb-3">
+                                <label for="formFile" class="form-label">school_grades_image*</label>
+                                <input class="form-control" type="file" name="school_grades_image">
+                        </div>
+
+                        <div class="mb-3">
+                                <label class="form-label">terms*</label>
+                                <select class="form-select" name="terms" required>
+                                        <option selected>نعم</option>
+                                        <option>لا</option>
+                                </select>
+                        </div>
+
+                        <div class="mb-3">
+                                <label for="formFile" class="form-label">dr_feedback*</label>
+                                <input class="form-control" type="file" name="dr_feedback">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+        </div>
+</body>
+
+</html>
