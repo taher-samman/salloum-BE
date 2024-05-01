@@ -5,17 +5,17 @@ namespace App\Http\Controllers\Apis;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use App\Models\Student;
-use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use Yaza\LaravelGoogleDriveStorage\Gdrive;
 use ZipArchive;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
+use Google_Client;
+use Google_Service_Drive;
+use Google_Service_Drive_DriveFile;
 
 class ApplicationsController extends BaseController
 {
@@ -28,8 +28,7 @@ class ApplicationsController extends BaseController
     {
         // \Log::info('[REQUEST postApplication]:' . json_encode($request->all()));
 
-
-        $fileValidation = 'required|base64';
+        $fileValidation = 'required|base64|base64size:5000';
         $stringValidation = 'required|string';
         $emailValidation = 'required|string|email_strict';
 
@@ -58,6 +57,7 @@ class ApplicationsController extends BaseController
             'terms' => $stringValidation
         ], [
             'email_strict' => 'The :attribute field must be a valid email address.',
+            'base64size' => 'Uploaded files should be less then 5M'
         ]);
 
         if ($validate->fails()) {
@@ -88,7 +88,6 @@ class ApplicationsController extends BaseController
         \Log::info('[REQUEST getApplications]');
         try {
             $applications = Application::whereIn('status', [Application::$statuses[1], Application::$statuses[2]])
-                ->orderBy('status', 'desc')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
             return $this->sendResponse($applications);
@@ -114,7 +113,7 @@ class ApplicationsController extends BaseController
             return $this->sendError($th->getMessage(), [], 403);
         }
 
-        return $this->sendResponse([], 'success');
+        return $this->sendResponse([], 'Your applications has been successfully updated');
     }
 
     public function postDoneApplication(Request $request)
@@ -139,7 +138,11 @@ class ApplicationsController extends BaseController
                     } else {
                         return $this->sendError($response->json(), [], 403);
                     }
+                } else {
+                    return $this->sendError('Application not found', [], 403);
                 }
+            } else {
+                return $this->sendError('student_id required', [], 403);
             }
         } catch (\Throwable $th) {
             return $this->sendError($th->getMessage(), [], 403);
@@ -175,12 +178,20 @@ class ApplicationsController extends BaseController
 
         $validate = Validator::make($data, [
             'code' => 'required|string',
-            'file' => 'required|base64',
+            'file' => 'required|base64|base64size:20000',
             'ext' => 'required|string'
+        ], [
+            'base64size' => 'Uploaded files should be less then 20M'
         ]);
 
         if ($validate->fails()) {
-            return $this->sendError('Wrong Data', $validate->errors(), 403);
+            $errors = $validate->errors();
+            $message = '';
+            foreach ($errors->all() as $error) {
+                $message .= $error . ' ';
+            }
+
+            return $this->sendError($message, [], 403);
         }
 
         $code = json_decode(Crypt::decryptString($data['code']));
@@ -200,8 +211,6 @@ class ApplicationsController extends BaseController
                 } else {
                     return $this->sendError('error with old zip file');
                 }
-
-                touch(public_path($email . '/' . $email . '.txt'));
 
                 $newZip = public_path($email . ".zip");
                 $newZipFile = new ZipArchive;
@@ -223,38 +232,33 @@ class ApplicationsController extends BaseController
                     $newZipFile->close();
 
                     $accessToken = $this->token();
-                    $response = Http::withToken($accessToken)
-                        ->attach('data', file_get_contents($newZip), $email . '.zip')
-                        ->post(
-                            'https://www.googleapis.com/upload/drive/v3/files',
-                            [
-                                'name' => $email . '.zip'
-                            ],
-                            [
-                                'Content-Type' => 'application/octet-stream',
-                            ]
-                        );
+                    $client = new Google_Client();
+                    $client->setAccessToken($accessToken);
+                    $driveService = new Google_Service_Drive($client);
+                    $fileMetadata = new Google_Service_Drive_DriveFile(array(
+                        'name' => $email . ".zip"
+                    ));
+                    $mimeType = mime_content_type($newZip);
+                    $createdFile = $driveService->files->create($fileMetadata, [
+                        'data' => file_get_contents($newZip),
+                        'mimeType' => $mimeType,
+                        'uploadType' => 'multipart',
+                    ]);
 
-                    if ($response->successful()) {
-                        $responseData = json_decode($response->body(), true);
-                        if (isset($responseData['id'])) {
-                            $application->media_link = $responseData['id'];
-                            $application->status = Application::$statuses[1];
-                            $application->save();
+                    if ($createdFile && isset($createdFile->id)) {
+                        $application->media_link = $createdFile->id;
+                        $application->status = Application::$statuses[1];
+                        $application->save();
 
-                            if (File::isDirectory($oldImagesFolder)) {
-                                File::deleteDirectory($oldImagesFolder);
-                            }
-                            unlink($newZip);
-                        } else {
-                            throw new \Exception('[Google Drive] Media id not found');
+                        if (File::isDirectory($oldImagesFolder)) {
+                            File::deleteDirectory($oldImagesFolder);
                         }
+                        unlink($newZip);
                     } else {
-                        $error = $response->json();
-                        throw new \Exception('[Google Drive] ' . $error);
+                        throw new \Exception('[Google Drive] Media id not found');
                     }
 
-                    return $this->sendResponse([], 'successsssssssssss');
+                    return $this->sendResponse([], 'Thank you for sharing your feedback! Your input has been received and will be instrumental in enhancing our services. We appreciate your valuable contribution.');
                 } else {
                     return $this->sendError('error with new zip file');
                 }

@@ -28,5 +28,11 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('email_strict', function ($attribute, $value, $parameters, $validator) {
             return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
         });
+
+        Validator::extend('base64size', function ($attribute, $value, $parameters, $validator) {
+            $file = base64_decode($value, true);
+            $filesize = strlen($file) / 1024;
+            return $filesize <= $parameters[0];
+        });
     }
 }

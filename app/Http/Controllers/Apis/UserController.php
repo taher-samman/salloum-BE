@@ -7,7 +7,7 @@ use App\Http\Controllers\Apis\BaseController as BaseController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-use Illuminate\Support\Facades\Crypt;
+
 class UserController extends BaseController
 {
     public function postRegister(Request $request)
