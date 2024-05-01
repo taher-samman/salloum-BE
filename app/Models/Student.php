@@ -60,7 +60,6 @@ class Student extends Model
                     $model->delete();
                     throw new Exception('error zipping media', 1);
                 }
-                // https://drive.usercontent.google.com/download?id=1Kh0AqS6--1hc2QHizzgjWDNU1UZHufmI&export=download
                 Application::create($data);
             } catch (\Throwable $th) {
                 $model->delete();

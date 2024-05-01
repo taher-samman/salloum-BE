@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Mail\DrFeedbackEmail;
+use App\Mail\StudentWaitingFeedbackEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 
 class Application extends Model
 {
@@ -81,7 +84,12 @@ class Application extends Model
                 "email" => $model->dr_email
             ];
             $code = Crypt::encryptString(json_encode($data));
-            \Log::info('[SET-FEEDBACK-URL]: ' . 'http://localhost/amc/feedback/' . $code);
+            $url = 'http://localhost/amc/feedback/' . $code;
+            \Log::info('[SET-FEEDBACK-URL]: ' . $url);
+
+            // Mail::to($model->dr_email)->send(new DrFeedbackEmail($url));
+
+            // Mail::to($model->student()->first()->email)->send(new StudentWaitingFeedbackEmail());
         });
     }
 }
