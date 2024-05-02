@@ -85,6 +85,7 @@ class Application extends Model
                 "email" => $model->dr_email
             ];
             $code = Crypt::encryptString(json_encode($data));
+            // TODO
             $url = 'http://localhost/amc/feedback/' . $code;
             \Log::info('[SET-FEEDBACK-URL]: ' . $url);
 

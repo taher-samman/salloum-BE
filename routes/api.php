@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Apis\ApplicationsController;
+use App\Http\Controllers\Apis\EmailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Apis\UserController;
@@ -22,6 +23,10 @@ Route::controller(ApplicationsController::class)->group(function () {
     Route::post('/applications/feedback', 'postFeedback');
 });
 
+Route::controller(EmailsController::class)->group(function () {
+    Route::post('/emails/contactus', 'postContactUsEmail');
+    Route::post('/emails/volunteer', 'postVolunteerEmail');
+});
 
 Route::controller(UserController::class)->group(function () {
     Route::post('/register', 'postRegister');
