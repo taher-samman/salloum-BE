@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('applications', function (Blueprint $table) {
+        Schema::create('be_wrhb3syq97_applications', function (Blueprint $table) {
             $table->id();
             $table->integer('student_id')->unsigned()->unique();
             $table->string('dr_email')->nullable(false);
@@ -32,7 +32,7 @@ return new class extends Migration
 
             $table->foreign('student_id')
                 ->references('id')
-                ->on('students')
+                ->on('be_wrhb3syq97_students')
                 ->onDelete('cascade');
         });
     }
@@ -42,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('applications');
+        Schema::dropIfExists('be_wrhb3syq97_applications');
     }
 };

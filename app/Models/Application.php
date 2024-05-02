@@ -18,6 +18,7 @@ class Application extends Model
      *
      * @var array<int, string>
      */
+    protected $table = 'be_wrhb3syq97_applications';
     public static $statuses = ['pending', 'active', 'done'];
 
     protected $fillable = [
