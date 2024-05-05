@@ -86,12 +86,12 @@ class Application extends Model
             ];
             $code = Crypt::encryptString(json_encode($data));
             // TODO
-            $url = 'http://localhost/amc/feedback/' . $code;
+            $url = config('app.wordpress_site_url') . '/feedback/' . $code;
             \Log::info('[SET-FEEDBACK-URL]: ' . $url);
 
-            // Mail::to($model->dr_email)->send(new DrFeedbackEmail($url));
+            Mail::to($model->dr_email)->send(new DrFeedbackEmail($url));
 
-            // Mail::to($model->student()->first()->email)->send(new StudentWaitingFeedbackEmail());
+            Mail::to($model->student()->first()->email)->send(new StudentWaitingFeedbackEmail());
         });
     }
 }

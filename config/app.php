@@ -59,6 +59,7 @@ return [
 
     'asset_url' => env('ASSET_URL'),
 
+    'wordpress_site_url' => env('WORDPRESS_SITE_URL', ''),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
