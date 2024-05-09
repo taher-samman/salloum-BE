@@ -22,7 +22,7 @@ class BaseController extends Controller
             'message' => $message,
         ];
 
-        \Log::info('[BaseController sendResponse $response]:' . json_encode($response));
+        \Log::info('[' . date('m/d/Y h:i:s') . ' BaseController sendResponse $response]:' . json_encode($response));
         return response()->json($response, 200);
     }
     /**
@@ -57,9 +57,9 @@ class BaseController extends Controller
             'grant_type' => 'refresh_token',
 
         ]);
-
+        \Log::info($response->getBody());
         $accessToken = json_decode((string) $response->getBody(), true)['access_token'];
-        // \Log::info($accessToken);
+
         return $accessToken;
     }
 }
