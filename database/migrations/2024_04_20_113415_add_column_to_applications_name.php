@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('applications', function (Blueprint $table) {
+        Schema::table('be_wrhb3syq97_applications', function (Blueprint $table) {
             $table->enum('status', Application::$statuses)->default(Application::$statuses[0]);
         });
     }
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('applications', function (Blueprint $table) {
+        Schema::table('be_wrhb3syq97_applications', function (Blueprint $table) {
             $table->dropColumn('status');
         });
     }

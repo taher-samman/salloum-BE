@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('applications', function (Blueprint $table) {
+        Schema::table('be_wrhb3syq97_applications', function (Blueprint $table) {
             $table->json('extra_fields');
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('applications', function (Blueprint $table) {
+        Schema::table('be_wrhb3syq97_applications', function (Blueprint $table) {
             $table->dropColumn('extra_fields');
         });
     }

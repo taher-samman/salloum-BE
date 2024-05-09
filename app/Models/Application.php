@@ -18,6 +18,7 @@ class Application extends Model
      *
      * @var array<int, string>
      */
+    protected $table = 'be_wrhb3syq97_applications';
     public static $statuses = ['pending', 'active', 'done'];
 
     protected $fillable = [
@@ -84,12 +85,13 @@ class Application extends Model
                 "email" => $model->dr_email
             ];
             $code = Crypt::encryptString(json_encode($data));
-            $url = 'http://localhost/amc/feedback/' . $code;
+            // TODO
+            $url = config('app.wordpress_site_url') . '/feedback/' . $code;
             \Log::info('[SET-FEEDBACK-URL]: ' . $url);
 
-            // Mail::to($model->dr_email)->send(new DrFeedbackEmail($url));
+            Mail::to($model->dr_email)->send(new DrFeedbackEmail($url));
 
-            // Mail::to($model->student()->first()->email)->send(new StudentWaitingFeedbackEmail());
+            Mail::to($model->student()->first()->email)->send(new StudentWaitingFeedbackEmail());
         });
     }
 }
