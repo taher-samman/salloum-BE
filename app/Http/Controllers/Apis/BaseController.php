@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Apis;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller as Controller;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 
 class BaseController extends Controller
 {
@@ -43,7 +41,7 @@ class BaseController extends Controller
         return response()->json($response, $code);
     }
 
-    public function token()
+    static function token()
     {
         $client_id = \Config('services.google.clientId');
         $client_secret = \Config('services.google.clientSecret');

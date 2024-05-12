@@ -28,7 +28,7 @@ class ApplicationsController extends BaseController
     {
         // \Log::info('[REQUEST postApplication]:' . json_encode($request->all()));
 
-        $fileValidation = 'required|base64|base64size:5000';
+        $fileValidation = 'required|base64|base64size:1000';
         $stringValidation = 'required|string';
         $emailValidation = 'required|string|email_strict';
 
@@ -57,7 +57,8 @@ class ApplicationsController extends BaseController
             'terms' => $stringValidation
         ], [
             'email_strict' => 'The :attribute field must be a valid email address.',
-            'base64size' => 'Uploaded files should be less then 5M'
+            'base64size' => 'Uploaded files should be less then 1M',
+            'base64' => 'Upload files type is incorrect'
         ]);
 
         if ($validate->fails()) {
@@ -107,6 +108,8 @@ class ApplicationsController extends BaseController
                     if ($appModel) {
                         $appModel->update($app);
                     }
+                }else{
+                    return $this->sendError('Application Not Found', [], 403);
                 }
             }
         } catch (\Throwable $th) {
@@ -127,7 +130,7 @@ class ApplicationsController extends BaseController
                     ->first();
                 if ($appModel) {
                     // remove media from Google Drive
-                    $accessToken = $this->token();
+                    $accessToken = BaseController::token();
                     $response = Http::withToken($accessToken)
                         ->delete('https://www.googleapis.com/drive/v3/files/' . $appModel->media_link);
 
@@ -231,12 +234,12 @@ class ApplicationsController extends BaseController
 
                     $newZipFile->close();
 
-                    $accessToken = $this->token();
+                    $accessToken = BaseController::token();
                     $client = new Google_Client();
                     $client->setAccessToken($accessToken);
                     $driveService = new Google_Service_Drive($client);
                     $fileMetadata = new Google_Service_Drive_DriveFile(array(
-                        'name' => $email . ".zip"
+                        'name' => 'Scholarship_' . $email . ".zip"
                     ));
                     $mimeType = mime_content_type($newZip);
                     $createdFile = $driveService->files->create($fileMetadata, [
@@ -285,7 +288,7 @@ class ApplicationsController extends BaseController
 
         $fileId = $request->input('media_id');
 
-        $accessToken = $this->token();
+        $accessToken = BaseController::token();
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $accessToken,
