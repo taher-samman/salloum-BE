@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Apis\ApplicationsController;
+use App\Http\Controllers\Apis\CaresController;
 use App\Http\Controllers\Apis\EmailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,14 +36,20 @@ Route::controller(UserController::class)->group(function () {
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-
     Route::controller(ApplicationsController::class)->group(function () {
         Route::get('/applications', 'getApplications');
         Route::post('/applications', 'postApplications');
         Route::post('/applications/done', 'postDoneApplication');
         Route::post('/applications/download', 'postDownloadMedia');
     });
+
+    Route::controller(CaresController::class)->group(function () {
+        Route::get('/healthcare/applications', 'getApplications');
+        Route::post('/healthcare/applications', 'postApplications');
+        Route::post('/healthcare/applications/done', 'postDoneApplication');
+    });
+});
+
+Route::controller(CaresController::class)->group(function () {
+    Route::post('/healthcare', 'postHealthcare');
 });

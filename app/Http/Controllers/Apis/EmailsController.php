@@ -48,7 +48,6 @@ class EmailsController extends BaseController
     public function postVolunteerEmail(Request $request)
     {
         \Log::info('[REQUEST postVolunteerEmail]:' . json_encode($request->all()));
-        return $this->sendError('shbk');
         $stringValidation = 'required|string';
         $emailValidation = 'required|string|email_strict';
         $validate = Validator::make($request->all(), [

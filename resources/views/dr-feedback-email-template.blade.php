@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Email</title>
+    <title>Feedback Email</title>
 </head>
 
 <body>
-    <h1>M3lm Ma3ak Taher Samman</h1>
-    <p>Fetli 3a ha link w zid feedback te3itk yrda 3a ahlak</p>
+    <h1>Dear Doctor,</h1>
+    <p>please open this link and add your feedback</p>
     <p>{{ $feedbackPageUrl }}</p>
 </body>
 

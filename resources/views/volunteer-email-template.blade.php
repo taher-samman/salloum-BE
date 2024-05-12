@@ -8,8 +8,7 @@
 </head>
 
 <body>
-    <h1>M3lm Ma3ak Taher Samman</h1>
-    <p>Fetli 3a ha link w zid feedback te3itk yrda 3a ahlak</p>
+    <h1>VOlunteer Email</h1>
 </body>
 
 </html>

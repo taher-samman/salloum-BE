@@ -9,34 +9,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VolunteerEmail extends Mailable
+class HealthCareApplicantEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $email;
-    public $name;
-    public $age;
-    public $phone;
-    public $academic;
-    public $occupation;
-    public $days;
-    public $time;
-    public $activities;
-
-    public function __construct($data)
+    public function __construct()
     {
-        $this->email = $data['email'];
-        $this->name = $data['name'];
-        $this->age = $data['age'];
-        $this->phone = $data['phone'];
-        $this->academic = $data['academic'];
-        $this->occupation = $data['occupation'];
-        $this->days = $data['days'];
-        $this->time = $data['time'];
-        $this->activities = $data['activities'];
+        //
     }
 
     /**
@@ -45,7 +27,7 @@ class VolunteerEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Volunteer Email'
+            subject: 'Health Care Program Email',
         );
     }
 
@@ -55,7 +37,7 @@ class VolunteerEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'volunteer-email-template',
+            view: 'health-care-applicant-email-template',
         );
     }
 
